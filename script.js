@@ -331,6 +331,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Process Google auth tokens first
   initGoogleAuth()
 
+  // Setup mobile navigation drawer and bottom navigation bar
+  setupMobileNavigation()
+
   // Update UI based on user login status
   updateUIForUser()
 
@@ -418,12 +421,117 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 })
 
+// Setup mobile navigation drawer and bottom navigation bar
+function setupMobileNavigation() {
+  const menuToggle = document.getElementById("mobile-menu-toggle")
+  const mainNav = document.getElementById("main-nav")
+  const drawerCloseBtn = document.getElementById("drawer-close-btn")
+  const navBackdrop = document.getElementById("nav-backdrop")
+
+  function openDrawer() {
+    if (mainNav) mainNav.classList.add("active")
+    if (menuToggle) menuToggle.classList.add("active")
+    if (navBackdrop) navBackdrop.classList.add("active")
+    document.body.style.overflow = "hidden"
+  }
+
+  function closeDrawer() {
+    if (mainNav) mainNav.classList.remove("active")
+    if (menuToggle) menuToggle.classList.remove("active")
+    if (navBackdrop) navBackdrop.classList.remove("active")
+    document.body.style.overflow = ""
+  }
+
+  if (menuToggle) {
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation()
+      if (mainNav && mainNav.classList.contains("active")) {
+        closeDrawer()
+      } else {
+        openDrawer()
+      }
+    })
+  }
+
+  if (drawerCloseBtn) {
+    drawerCloseBtn.addEventListener("click", closeDrawer)
+  }
+
+  if (navBackdrop) {
+    navBackdrop.addEventListener("click", closeDrawer)
+  }
+
+  // Close drawer when clicking any nav link
+  if (mainNav) {
+    const navLinks = mainNav.querySelectorAll("a, button")
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        closeDrawer()
+      })
+    })
+  }
+
+  // Setup Mobile Bottom Navigation Bar if not already in DOM
+  const isExcluded = window.location.pathname.includes("admin-panel")
+  if (!document.querySelector(".mobile-bottom-nav") && !isExcluded) {
+    const bottomNav = document.createElement("nav")
+    bottomNav.className = "mobile-bottom-nav"
+
+    let pathSegments = window.location.pathname.split("/").filter(Boolean)
+    let curPage = pathSegments.length > 0 ? pathSegments.pop() : "index"
+    curPage = curPage.replace(".html", "")
+
+    const cartCount = cart ? cart.length : 0
+
+    bottomNav.innerHTML = `
+      <a href="index.html" class="bottom-nav-item ${curPage === "index" ? "active" : ""}">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="my-notes.html" class="bottom-nav-item ${curPage === "my-notes" ? "active" : ""}">
+        <i class="fas fa-book-open"></i>
+        <span>My Notes</span>
+      </a>
+      <a href="cart.html" class="bottom-nav-item ${curPage === "cart" ? "active" : ""}">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge">${cartCount}</span>
+        <span>Cart</span>
+      </a>
+      <a href="my-orders.html" class="bottom-nav-item ${curPage === "my-orders" ? "active" : ""}">
+        <i class="fas fa-receipt"></i>
+        <span>Orders</span>
+      </a>
+      <a href="#" class="bottom-nav-item bottom-nav-account ${curPage === "profile" ? "active" : ""}">
+        <i class="fas fa-user-circle"></i>
+        <span class="bottom-nav-account-label">${currentUser ? "Account" : "Login"}</span>
+      </a>
+    `
+    document.body.appendChild(bottomNav)
+    document.body.classList.add("has-bottom-nav")
+
+    // Account link behavior in bottom bar
+    const bottomAccountBtn = bottomNav.querySelector(".bottom-nav-account")
+    if (bottomAccountBtn) {
+      bottomAccountBtn.addEventListener("click", (e) => {
+        e.preventDefault()
+        if (currentUser) {
+          window.location.href = "profile.html"
+        } else {
+          openLoginModal()
+        }
+      })
+    }
+  }
+}
+
 // Update UI based on user login status
 function updateUIForUser() {
   const loginBtn = document.getElementById("login-btn")
   const signupBtn = document.getElementById("signup-btn")
   const myOrdersLink = document.querySelector(".my-orders-link")
-  // const subscriptionLink = document.querySelector(".subscription-link")
+  const drawerUserName = document.querySelector(".drawer-user-name")
+  const drawerUserStatus = document.querySelector(".drawer-user-status")
+  const bottomAccountLabel = document.querySelector(".bottom-nav-account-label")
 
   if (currentUser) {
     if (loginBtn) {
@@ -440,13 +548,13 @@ function updateUIForUser() {
 
     // Show My Orders link if logged in
     if (myOrdersLink) {
-      myOrdersLink.style.display = "block"
+      myOrdersLink.style.display = "flex"
     }
 
-    // Show Subscription link if logged in
-    // if (subscriptionLink) {
-    //   subscriptionLink.style.display = "block"
-    // }
+    // Update mobile drawer greeting
+    if (drawerUserName) drawerUserName.textContent = currentUser.name || "Student"
+    if (drawerUserStatus) drawerUserStatus.textContent = currentUser.email || "Active Member"
+    if (bottomAccountLabel) bottomAccountLabel.textContent = "Account"
   } else {
     if (loginBtn) {
       loginBtn.innerHTML = `<i class="fas fa-user"></i> Login`
@@ -463,17 +571,17 @@ function updateUIForUser() {
       myOrdersLink.style.display = "none"
     }
 
-    // Hide Subscription link if not logged in
-    // if (subscriptionLink) {
-    //   subscriptionLink.style.display = "none"
-    // }
+    // Update mobile drawer greeting for guest
+    if (drawerUserName) drawerUserName.textContent = "Welcome, Guest"
+    if (drawerUserStatus) drawerUserStatus.textContent = "Sign in to access your notes"
+    if (bottomAccountLabel) bottomAccountLabel.textContent = "Login"
   }
 
-  // Add account section to header if not already present
+  // Add account section to desktop header if not already present
   const header = document.querySelector("header nav ul")
   if (header && !document.querySelector(".account-section")) {
     const accountSection = document.createElement("li")
-    accountSection.className = "account-section"
+    accountSection.className = "account-section nav-desktop-only"
     accountSection.innerHTML = `
       <a href="#" class="account-link">
         <i class="fas fa-user-circle"></i>
@@ -996,22 +1104,17 @@ function addToCart(event) {
   }
 }
 
-// Update cart count in the header
+// Update cart count in all locations (desktop header, mobile header, bottom nav)
 function updateCartCount() {
-  const cartCount = document.getElementById("cart-count")
-  const cartCountHeader = document.getElementById("cart-count-header")
+  const count = cart ? cart.length : 0
+  const cartCountElements = document.querySelectorAll(".cart-count, #cart-count, #cart-count-header, .cart-badge")
+  cartCountElements.forEach((el) => {
+    el.textContent = count
+  })
+
   const priceItemCount = document.getElementById("price-item-count")
-
-  if (cartCountHeader) {
-    cartCountHeader.textContent = cart.length
-  }
-
-  if (cartCount) {
-    cartCount.textContent = cart.length
-  }
-
   if (priceItemCount) {
-    priceItemCount.textContent = cart.length
+    priceItemCount.textContent = count
   }
 }
 
