@@ -2,7 +2,6 @@ const Payment = require("../models/Payment")
 const Order = require("../models/Order")
 const User = require("../models/User")
 const crypto = require("crypto")
-const axios = require("axios")
 
 // Process card payment
 exports.processCardPayment = async (req, res) => {
