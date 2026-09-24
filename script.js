@@ -326,8 +326,8 @@ let highlights = JSON.parse(localStorage.getItem("highlights")) || []
 const userNotes = JSON.parse(localStorage.getItem("userNotes")) || []
 // let userSubscription = JSON.parse(localStorage.getItem("userSubscription")) || null
 
-// DOM Content Loaded Event
-document.addEventListener("DOMContentLoaded", async () => {
+// Application Initialization & Lifecycle
+async function initApp() {
   // Process Google auth tokens first
   initGoogleAuth()
 
@@ -419,7 +419,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       })
     })
   }
-})
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp)
+} else {
+  initApp()
+}
 
 // Setup mobile navigation drawer and bottom navigation bar
 function setupMobileNavigation() {
@@ -443,33 +449,48 @@ function setupMobileNavigation() {
   }
 
   if (menuToggle) {
-    menuToggle.addEventListener("click", (e) => {
+    // Use onclick to guarantee single idempotent handler without duplicates
+    menuToggle.onclick = (e) => {
+      e.preventDefault()
       e.stopPropagation()
       if (mainNav && mainNav.classList.contains("active")) {
         closeDrawer()
       } else {
         openDrawer()
       }
-    })
+    }
   }
 
   if (drawerCloseBtn) {
-    drawerCloseBtn.addEventListener("click", closeDrawer)
+    drawerCloseBtn.onclick = (e) => {
+      e.preventDefault()
+      closeDrawer()
+    }
   }
 
   if (navBackdrop) {
-    navBackdrop.addEventListener("click", closeDrawer)
+    navBackdrop.onclick = (e) => {
+      e.preventDefault()
+      closeDrawer()
+    }
   }
 
-  // Close drawer when clicking any nav link
+  // Close drawer when clicking regular navigation links
   if (mainNav) {
-    const navLinks = mainNav.querySelectorAll("a, button")
+    const navLinks = mainNav.querySelectorAll("ul li a")
     navLinks.forEach((link) => {
       link.addEventListener("click", () => {
         closeDrawer()
       })
     })
   }
+
+  // Close drawer on Escape key
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mainNav && mainNav.classList.contains("active")) {
+      closeDrawer()
+    }
+  })
 
   // Setup Mobile Bottom Navigation Bar if not already in DOM
   const isExcluded = window.location.pathname.includes("admin-panel")
@@ -536,14 +557,19 @@ function updateUIForUser() {
   if (currentUser) {
     if (loginBtn) {
       loginBtn.innerHTML = `<i class="fas fa-user"></i> ${currentUser.name}`
-      loginBtn.removeEventListener("click", openLoginModal)
-      loginBtn.addEventListener("click", showUserMenu)
+      loginBtn.onclick = (e) => {
+        e.preventDefault()
+        showUserMenu()
+      }
     }
 
     if (signupBtn) {
       signupBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout`
-      signupBtn.removeEventListener("click", openSignupModal)
-      signupBtn.addEventListener("click", logout)
+      signupBtn.className = "signup-btn logout-active-btn"
+      signupBtn.onclick = (e) => {
+        e.preventDefault()
+        logout()
+      }
     }
 
     // Show My Orders link if logged in
@@ -555,15 +581,84 @@ function updateUIForUser() {
     if (drawerUserName) drawerUserName.textContent = currentUser.name || "Student"
     if (drawerUserStatus) drawerUserStatus.textContent = currentUser.email || "Active Member"
     if (bottomAccountLabel) bottomAccountLabel.textContent = "Account"
+
+    // 1. Mobile Drawer Header Logout Button
+    let drawerLogoutBtn = document.getElementById("drawer-logout-btn")
+    if (!drawerLogoutBtn) {
+      const drawerHeader = document.querySelector(".mobile-drawer-header")
+      if (drawerHeader) {
+        drawerLogoutBtn = document.createElement("button")
+        drawerLogoutBtn.id = "drawer-logout-btn"
+        drawerLogoutBtn.className = "drawer-logout-btn"
+        drawerLogoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout'
+        drawerLogoutBtn.title = "Log out of NoteFolio"
+        drawerLogoutBtn.onclick = (e) => {
+          e.preventDefault()
+          logout()
+        }
+        const closeBtn = document.getElementById("drawer-close-btn")
+        if (closeBtn) {
+          drawerHeader.insertBefore(drawerLogoutBtn, closeBtn)
+        } else {
+          drawerHeader.appendChild(drawerLogoutBtn)
+        }
+      }
+    } else {
+      drawerLogoutBtn.style.display = "inline-flex"
+    }
+
+    // 2. Mobile Drawer List Logout Item
+    let drawerLogoutItem = document.getElementById("drawer-logout-item")
+    if (!drawerLogoutItem) {
+      const navList = document.querySelector(".main-nav ul")
+      if (navList) {
+        drawerLogoutItem = document.createElement("li")
+        drawerLogoutItem.id = "drawer-logout-item"
+        drawerLogoutItem.className = "drawer-logout-item"
+        drawerLogoutItem.innerHTML = `
+          <a href="#" class="drawer-logout-link" style="color: #ef4444 !important; font-weight: 600;">
+            <i class="fas fa-sign-out-alt" style="color: #ef4444 !important;"></i> Logout
+          </a>
+        `
+        drawerLogoutItem.querySelector("a").onclick = (e) => {
+          e.preventDefault()
+          logout()
+        }
+        navList.appendChild(drawerLogoutItem)
+      }
+    } else {
+      drawerLogoutItem.style.display = "block"
+    }
+
+    // 3. Profile page logout button
+    const profileHeader = document.querySelector(".profile-header")
+    if (profileHeader && !document.getElementById("profile-logout-btn")) {
+      const profileLogoutBtn = document.createElement("button")
+      profileLogoutBtn.id = "profile-logout-btn"
+      profileLogoutBtn.className = "profile-logout-btn"
+      profileLogoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout'
+      profileLogoutBtn.onclick = (e) => {
+        e.preventDefault()
+        logout()
+      }
+      profileHeader.appendChild(profileLogoutBtn)
+    }
   } else {
     if (loginBtn) {
-      loginBtn.innerHTML = `<i class="fas fa-user"></i> Login`
-      loginBtn.addEventListener("click", openLoginModal)
+      loginBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Login`
+      loginBtn.onclick = (e) => {
+        e.preventDefault()
+        openLoginModal()
+      }
     }
 
     if (signupBtn) {
       signupBtn.innerHTML = `<i class="fas fa-user-plus"></i> Sign Up`
-      signupBtn.addEventListener("click", openSignupModal)
+      signupBtn.className = "signup-btn"
+      signupBtn.onclick = (e) => {
+        e.preventDefault()
+        openSignupModal()
+      }
     }
 
     // Hide My Orders link if not logged in
@@ -575,6 +670,16 @@ function updateUIForUser() {
     if (drawerUserName) drawerUserName.textContent = "Welcome, Guest"
     if (drawerUserStatus) drawerUserStatus.textContent = "Sign in to access your notes"
     if (bottomAccountLabel) bottomAccountLabel.textContent = "Login"
+
+    // Hide mobile drawer logout buttons if logged out
+    const drawerLogoutBtn = document.getElementById("drawer-logout-btn")
+    if (drawerLogoutBtn) drawerLogoutBtn.style.display = "none"
+
+    const drawerLogoutItem = document.getElementById("drawer-logout-item")
+    if (drawerLogoutItem) drawerLogoutItem.style.display = "none"
+
+    const profileLogoutBtn = document.getElementById("profile-logout-btn")
+    if (profileLogoutBtn) profileLogoutBtn.remove()
   }
 
   // Add account section to desktop header if not already present
@@ -600,7 +705,11 @@ function updateUIForUser() {
     // Add event listener to account link
     accountSection.querySelector(".account-link").addEventListener("click", (e) => {
       e.preventDefault()
-      showUserMenu()
+      if (currentUser) {
+        showUserMenu()
+      } else {
+        openLoginModal()
+      }
     })
   }
 }
@@ -4152,6 +4261,9 @@ function renderProfile() {
           <h2>${currentUser.name}</h2>
           <p>${currentUser.email}</p>
         </div>
+        <button id="profile-logout-btn" class="profile-logout-btn" style="margin-left:auto;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
       </div>
       
       <div class="profile-form">
@@ -4207,6 +4319,15 @@ function renderProfile() {
         </div>
       </div>
     `
+
+    // Add event listener to profile logout button
+    const profileLogoutBtn = document.getElementById("profile-logout-btn")
+    if (profileLogoutBtn) {
+      profileLogoutBtn.addEventListener("click", (e) => {
+        e.preventDefault()
+        logout()
+      })
+    }
 
     // Add event listener to form submission
     const editProfileForm = document.getElementById("edit-profile-form")
