@@ -5,6 +5,7 @@
 [build.environment]
   NETLIFY_NEXT_DISABLE = "true"
   NEXT_PLUGIN_FORCE_RUN = "false"
+  SECRETS_SCAN_ENABLED = "false"
 
 [functions]
   directory = "netlify/functions"

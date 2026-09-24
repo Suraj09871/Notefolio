@@ -2,7 +2,7 @@ const User = require("../models/User")
 const jwt = require("jsonwebtoken")
 const https = require("https")
 
-const JWT_SECRET = process.env.JWT_SECRET || "notefolio_jwt_secret_key_2026_secure"
+const JWT_SECRET = process.env.JWT_SECRET || "notefolio_secret_key"
 
 const generateToken = (id) => {
   return jwt.sign({ id }, JWT_SECRET, { expiresIn: "30d" })

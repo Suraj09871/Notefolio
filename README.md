@@ -148,7 +148,7 @@ Visit **`http://localhost:3000`** in your browser!
 - **Admin Login Portal:** `/login.html` (or click "Admin Login" in the footer of any page)
 - **Admin Management Dashboard:** `/admin-panel.html`
 - **Default Admin Email:** `admin@notefolio.com` (or username `admin`)
-- **Default Admin Key / Password:** `admin_key_2026` (or `admin123`)
+- **Default Admin Key / Password:** configured via `ADMIN_KEY` environment variable (default fallback: `admin123`)
 
 > 💡 *Note: You can change the admin email and key anytime by setting the `ADMIN_EMAIL` and `ADMIN_KEY` environment variables in your Render/Netlify dashboards or local `.env` file.*
 

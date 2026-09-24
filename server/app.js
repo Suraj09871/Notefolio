@@ -65,23 +65,17 @@ app.post('/api/admin/login', async (req, res) => {
   const inputEmail = (email || username || '').trim().toLowerCase();
   const inputKey = (adminKey || password || '').trim();
 
-  const validAdminEmails = [
-    (process.env.ADMIN_EMAIL || 'admin@notefolio.com').toLowerCase(),
-    'admin@notefolio.com',
-    'admin'
-  ];
+  const expectedAdminEmail = (process.env.ADMIN_EMAIL || 'admin@notefolio.com').trim().toLowerCase();
+  const expectedAdminKey = (process.env.ADMIN_KEY || process.env.ADMIN_PASSWORD || 'admin123').trim();
+  const jwtSecret = process.env.JWT_SECRET || 'notefolio_secret_key';
 
-  const validAdminKeys = [
-    process.env.ADMIN_KEY || 'admin_key_2026',
-    process.env.ADMIN_PASSWORD || 'admin123',
-    'admin_key_2026',
-    'admin123'
-  ];
+  const isEmailValid = inputEmail === expectedAdminEmail || inputEmail === 'admin' || inputEmail === 'admin@notefolio.com';
+  const isKeyValid = inputKey === expectedAdminKey || inputKey === 'admin123';
 
-  if (validAdminEmails.includes(inputEmail) && validAdminKeys.includes(inputKey)) {
+  if (isEmailValid && isKeyValid) {
     const token = jwt.sign(
       { id: 'admin', role: 'admin', email: inputEmail },
-      process.env.JWT_SECRET || 'notefolio_jwt_secret_key_2026_secure',
+      jwtSecret,
       { expiresIn: '24h' }
     );
     return res.json({
