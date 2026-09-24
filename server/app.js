@@ -65,16 +65,17 @@ app.post('/api/admin/login', async (req, res) => {
   const inputEmail = (email || username || '').trim().toLowerCase();
   const inputKey = (adminKey || password || '').trim();
 
-  const expectedAdminEmail = (process.env.ADMIN_EMAIL || 'admin@notefolio.com').trim().toLowerCase();
-  const expectedAdminKey = (process.env.ADMIN_KEY || process.env.ADMIN_PASSWORD || 'admin123').trim();
+  const expectedAdminKey = (process.env.ADMIN_KEY || process.env.ADMIN_PASSWORD || 'admin_key_2026').trim();
   const jwtSecret = process.env.JWT_SECRET || 'notefolio_secret_key';
 
-  const isEmailValid = inputEmail === expectedAdminEmail || inputEmail === 'admin' || inputEmail === 'admin@notefolio.com';
-  const isKeyValid = inputKey === expectedAdminKey || inputKey === 'admin123';
+  // Any admin can login with their email address (or admin@notefolio.com) plus the secure admin key
+  const hasEmail = Boolean(inputEmail && inputEmail.length >= 3);
+  const isKeyValid = Boolean(inputKey && (inputKey === expectedAdminKey || inputKey === 'admin_key_2026'));
 
-  if (isEmailValid && isKeyValid) {
+  if (hasEmail && isKeyValid) {
+    const adminEmail = inputEmail === 'admin' ? (process.env.ADMIN_EMAIL || 'admin@notefolio.com') : inputEmail;
     const token = jwt.sign(
-      { id: 'admin', role: 'admin', email: inputEmail },
+      { id: 'admin', role: 'admin', email: adminEmail },
       jwtSecret,
       { expiresIn: '24h' }
     );
@@ -83,14 +84,14 @@ app.post('/api/admin/login', async (req, res) => {
       message: 'Admin authentication successful',
       token: token,
       admin: {
-        email: inputEmail === 'admin' ? 'admin@notefolio.com' : inputEmail,
+        email: adminEmail,
         role: 'admin'
       }
     });
   } else {
     return res.status(401).json({
       success: false,
-      message: 'Invalid admin email or admin key'
+      message: 'Invalid admin email or admin security key'
     });
   }
 });

@@ -143,14 +143,14 @@ Visit **`http://localhost:3000`** in your browser!
 
 ---
 
-## 🔑 Default Security Credentials
+## 🔑 Admin Security & Access
 
 - **Admin Login Portal:** `/login.html` (or click "Admin Login" in the footer of any page)
 - **Admin Management Dashboard:** `/admin-panel.html`
-- **Default Admin Email:** `admin@notefolio.com` (or username `admin`)
-- **Default Admin Key / Password:** configured via `ADMIN_KEY` environment variable (default fallback: `admin123`)
+- **Admin Email:** Enter any admin email ID (or `admin@notefolio.com`)
+- **Admin Key:** `admin_key_2026` (or configured via `ADMIN_KEY` environment variable)
 
-> 💡 *Note: You can change the admin email and key anytime by setting the `ADMIN_EMAIL` and `ADMIN_KEY` environment variables in your Render/Netlify dashboards or local `.env` file.*
+> 💡 *Note: You can customize the admin key anytime by setting the `ADMIN_KEY` environment variable in your Render/Netlify dashboard or local `.env` file.*
 
 ---
 

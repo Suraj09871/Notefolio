@@ -32,7 +32,7 @@ Develop a high-performance, responsive, secure web platform for undergraduate st
 - **Copy Protection:** Block right-click context menu, browser printing, and screenshot key shortcuts.
 
 ### 2.6 Admin Portal
-- **Admin Access:** Secured route with admin credentials (`admin` / `admin123`).
+- **Admin Access:** Secured route with admin credentials (admin email / `admin_key_2026`).
 - **Note CRUD:** Upload PDF documents (with automatic page counts and Cloudinary storage), edit note details, and delete notes.
 - **User Control:** Inspect registered accounts, view purchase history, and delete users.
 
