@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - NoteFolio</title>
+    <link rel="stylesheet" href="styles.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Added Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Google Identity Services for Sign-In -->
+    <meta name="google-client-id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <!-- Updated header to match modern design with mobile menu -->
+    <header class="modern-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/Logo/logo1.png" alt="NoteFolio Logo" class="logo-image">
+                    <span>Note</span>Folio
+                </a>
+            </div>
+            
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="my-notes.html">My Notes</a></li>
+                    <li><a href="my-orders.html">My Orders</a></li>
+                    <li>
+                        <a href="cart.html" class="cart-link active">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cart-count-header">0</span>
+                        </a>
+                    </li>
+                    <li><button id="login-btn" class="login-btn"><i class="fas fa-user"></i> Login</button></li>
+                    <li><button id="signup-btn" class="signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Enhanced cart section with modern styling -->
+        <section class="cart-section modern-cart">
+            <div class="cart-container">
+                <div class="cart-header">
+                    <div class="cart-title">
+                        <h1><i class="fas fa-shopping-cart"></i> My Cart</h1>
+                        <p class="cart-subtitle">Review your selected notes before checkout</p>
+                    </div>
+                    <div class="cart-count-badge">
+                        <span id="cart-count">0</span> items
+                    </div>
+                </div>
+                
+                <div class="cart-content">
+                    <div class="cart-items-container">
+                        <div class="cart-items" id="cart-items">
+                            <!-- Added empty cart state -->
+                            <div class="empty-cart" id="empty-cart-state">
+                                <div class="empty-cart-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <h3>Your cart is empty</h3>
+                                <p>Looks like you haven't added any notes to your cart yet.</p>
+                                <a href="index.html" class="btn primary-btn">Browse Notes</a>
+                            </div>
+                        </div>
+                        
+                        <div class="coupon-container">
+                            <div class="available-coupons">
+                                <h3><i class="fas fa-tag"></i> Available Offers</h3>
+                                <div class="coupon-list">
+                                    <div class="coupon-item">
+                                        <div class="coupon-code">NEW10</div>
+                                        <div class="coupon-desc">10% off for first-time users</div>
+                                    </div>
+                                    <div class="coupon-item">
+                                        <div class="coupon-code">STUDENT20</div>
+                                        <div class="coupon-desc">20% off for verified students</div>
+                                    </div>
+                                    <div class="coupon-item">
+                                        <div class="coupon-code">BUNDLE15</div>
+                                        <div class="coupon-desc">15% off when purchasing 3+ notes</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="apply-coupon">
+                                <div class="coupon-input-group">
+                                    <input type="text" id="coupon-code" placeholder="Enter coupon code">
+                                    <button id="apply-coupon-btn" class="btn secondary-btn">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="price-details modern-price-card">
+                        <div class="price-header">
+                            <h3>Order Summary</h3>
+                        </div>
+                        <div class="price-breakdown">
+                            <div class="price-row">
+                                <span>Subtotal (<span id="price-item-count">0</span> items)</span>
+                                <span id="price-total">₹0</span>
+                            </div>
+                            <div class="price-row discount-row">
+                                <span>Discount</span>
+                                <span class="discount-amount" id="discount-amount">-₹0</span>
+                            </div>
+                            <div class="price-row">
+                                <span>GST (18%)</span>
+                                <span id="gst-amount">₹0</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Delivery Charges</span>
+                                <span class="free-delivery">FREE</span>
+                            </div>
+                            <div class="price-divider"></div>
+                            <div class="price-row total-row">
+                                <span>Total Amount</span>
+                                <span id="cart-total">₹0</span>
+                            </div>
+                            <div class="savings-info">
+                                <i class="fas fa-piggy-bank"></i>
+                                You will save <span id="total-savings">₹0</span> on this order
+                            </div>
+                        </div>
+                        <button id="place-order-btn" class="btn primary-btn place-order-btn">
+                            <i class="fas fa-lock"></i> Secure Checkout
+                        </button>
+                        <div class="security-badges">
+                            <div class="security-badge">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>100% Secure</span>
+                            </div>
+                            <div class="security-badge">
+                                <i class="fas fa-undo"></i>
+                                <span>Easy Returns</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced payment modal with modern styling -->
+    <div id="payment-modal" class="modal modern-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Choose Payment Method</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="payment-methods">
+                    <div class="payment-option modern-payment-option" data-method="upi">
+                        <input type="radio" name="payment" id="upi" value="upi">
+                        <label for="upi">
+                            <div class="payment-icon">
+                                <img src="https://cdn-icons-png.flaticon.com/128/6124/6124998.png" alt="UPI" class="payment-method-img">
+                            </div>
+                            <div class="payment-info">
+                                <h4>UPI Payment</h4>
+                                <p>Pay using any UPI app</p>
+                            </div>
+                            <div class="payment-badge">Instant</div>
+                        </label>
+                    </div>
+                    
+                    <div class="payment-details modern-payment-details" data-method="upi">
+                        <div class="upi-apps">
+                            <button class="upi-app-btn">
+                                <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/gpay.png" alt="GPay"> GPay
+                            </button>
+                            <button class="upi-app-btn">
+                                <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/phonepe.png" alt="PhonePe"> PhonePe
+                            </button>
+                            <button class="upi-app-btn">
+                                <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/paytm.png" alt="Paytm"> Paytm
+                            </button>
+                        </div>
+                        <div class="upi-input">
+                            <input type="text" placeholder="Enter UPI ID (e.g., name@upi)">
+                            <button class="verify-btn">Verify</button>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-option modern-payment-option" data-method="card">
+                        <input type="radio" name="payment" id="card" value="card">
+                        <label for="card">
+                            <div class="payment-icon">
+                                <img src="https://cdn-icons-png.flaticon.com/128/633/633611.png" alt="Card" class="payment-method-img">
+                            </div>
+                            <div class="payment-info">
+                                <h4>Debit/Credit Card</h4>
+                                <p>Visa, Mastercard, RuPay</p>
+                            </div>
+                            <div class="payment-badge">Secure</div>
+                        </label>
+                    </div>
+                    
+                    <div class="payment-details modern-payment-details" data-method="card">
+                        <div class="card-images">
+                            <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/visa.png" alt="Visa">
+                            <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/mastercard.png" alt="Mastercard">
+                            <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/rupay.png" alt="RuPay">
+                        </div>
+                        <input type="text" placeholder="Card Number">
+                        <div class="card-expiry">
+                            <input type="text" placeholder="MM/YY">
+                            <input type="password" placeholder="CVV">
+                        </div>
+                        <input type="text" placeholder="Cardholder Name">
+                    </div>
+                    
+                    <div class="payment-option modern-payment-option" data-method="netbanking">
+                        <input type="radio" name="payment" id="netbanking" value="netbanking">
+                        <label for="netbanking">
+                            <div class="payment-icon">
+                                <img src="https://cdn-icons-png.flaticon.com/128/2830/2830284.png" alt="Net Banking" class="payment-method-img">
+                            </div>
+                            <div class="payment-info">
+                                <h4>Net Banking</h4>
+                                <p>All major banks supported</p>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="payment-details modern-payment-details" data-method="netbanking">
+                        <div class="bank-options">
+                            <div class="bank-option">
+                                <input type="radio" name="bank" id="sbi">
+                                <label for="sbi">
+                                    <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/sbi.png" alt="SBI">
+                                    SBI
+                                </label>
+                            </div>
+                            <div class="bank-option">
+                                <input type="radio" name="bank" id="hdfc">
+                                <label for="hdfc">
+                                    <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/hdfc.png" alt="HDFC">
+                                    HDFC
+                                </label>
+                            </div>
+                            <div class="bank-option">
+                                <input type="radio" name="bank" id="icici">
+                                <label for="icici">
+                                    <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/icici.png" alt="ICICI">
+                                    ICICI
+                                </label>
+                            </div>
+                            <div class="bank-option">
+                                <input type="radio" name="bank" id="axis">
+                                <label for="axis">
+                                    <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/axis.png" alt="Axis">
+                                    Axis
+                                </label>
+                            </div>
+                            <div class="bank-option">
+                                <input type="radio" name="bank" id="other-bank">
+                                <label for="other-bank">Other</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-option modern-payment-option" data-method="razorpay">
+                        <input type="radio" name="payment" id="razorpay" value="razorpay">
+                        <label for="razorpay">
+                            <div class="payment-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>Pay with Razorpay</h4>
+                                <p>Multiple payment options</p>
+                            </div>
+                            <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/razorpay.png" alt="Razorpay" class="razorpay-logo">
+                        </label>
+                    </div>
+                    
+                    <div class="payment-details modern-payment-details" data-method="razorpay">
+                        <p>You will be redirected to Razorpay's secure payment gateway to complete your payment.</p>
+                        <div class="razorpay-features">
+                            <div><i class="fas fa-lock"></i> Secure Payment</div>
+                            <div><i class="fas fa-shield-alt"></i> Bank Grade Security</div>
+                            <div><i class="fas fa-check-circle"></i> Multiple Payment Options</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-summary">
+                <div class="payment-total">
+                    <span>Amount Payable:</span>
+                    <span id="payment-amount">₹0</span>
+                </div>
+                <button id="pay-now-btn" class="btn primary-btn pay-now-btn">
+                    <i class="fas fa-credit-card"></i> Pay Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p class="form-switch">Don't have an account? <a href="#" id="switch-to-signup">Sign up</a></p>
+            </form>
+                <div class="auth-divider"><span>OR</span></div>
+                <div class="google-signin-btn" id="google-login-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg> Sign in with Google</div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <p class="form-switch">Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+            </form>
+                <div class="auth-divider"><span>OR</span></div>
+                <div class="google-signin-btn" id="google-signup-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg> Sign in with Google</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/Logo/logo1.png" alt="NoteFolio Logo" class="logo-image">
+                <span>Note</span>Folio
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="my-notes.html">My Notes</a></li>
+                    <li><a href="my-orders.html">My Orders</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li><li><a href="login.html" style="color: #34d399;"><i class="fas fa-shield-alt"></i> Admin Login</a></li></ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> support@notefolio.com</p>
+                <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 NoteFolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="script.js?v=4"></script>
+    <!-- Added mobile menu functionality -->
+    <script>
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const nav = document.getElementById('main-nav');
+            nav.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

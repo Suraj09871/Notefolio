@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteFolio Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+
+        .admin-layout { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border-right: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column;
+            position: fixed; height: 100vh; z-index: 10;
+        }
+        .sidebar-brand {
+            padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .sidebar-brand i { font-size: 24px; color: #34d399; }
+        .sidebar-brand h2 { font-size: 20px; font-weight: 700; color: #f1f5f9; }
+        .sidebar-brand span { color: #34d399; }
+
+        .sidebar-nav { flex: 1; padding: 16px 12px; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+            border-radius: 10px; cursor: pointer; transition: all 0.2s; color: #94a3b8;
+            margin-bottom: 4px; font-size: 14px; font-weight: 500;
+        }
+        .nav-item:hover { background: rgba(52,211,153,0.08); color: #e2e8f0; }
+        .nav-item.active { background: rgba(52,211,153,0.15); color: #34d399; }
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar-footer {
+            padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .logout-btn {
+            width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px; border-radius: 10px; border: 1px solid rgba(239,68,68,0.3);
+            background: rgba(239,68,68,0.1); color: #ef4444; font-size: 14px; font-weight: 500;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .logout-btn:hover { background: rgba(239,68,68,0.2); }
+
+        /* Main Content */
+        .main-content { flex: 1; margin-left: 260px; padding: 24px; }
+
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .page-header h1 { font-size: 24px; font-weight: 700; color: #f1f5f9; }
+        .page-header .badge {
+            background: linear-gradient(135deg, #34d399, #059669); color: #fff;
+            padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+        }
+
+        /* Sections */
+        .admin-section { display: none; }
+        .admin-section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+        .stat-card {
+            background: linear-gradient(135deg, #1e293b, #1a2332);
+            border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 22px;
+            transition: all 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-2px); border-color: rgba(52,211,153,0.2); }
+        .stat-card .stat-icon {
+            width: 44px; height: 44px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px;
+        }
+        .stat-card:nth-child(1) .stat-icon { background: rgba(52,211,153,0.15); color: #34d399; }
+        .stat-card:nth-child(2) .stat-icon { background: rgba(96,165,250,0.15); color: #60a5fa; }
+        .stat-card:nth-child(3) .stat-icon { background: rgba(251,191,36,0.15); color: #fbbf24; }
+        .stat-card:nth-child(4) .stat-icon { background: rgba(167,139,250,0.15); color: #a78bfa; }
+        .stat-value { font-size: 28px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+        .stat-label { font-size: 13px; color: #64748b; font-weight: 500; }
+
+        /* Cards */
+        .card {
+            background: #1e293b; border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px; padding: 24px; margin-bottom: 20px;
+        }
+        .card-header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+            padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .card-header i { color: #34d399; font-size: 18px; }
+        .card-header h3 { font-size: 17px; font-weight: 600; color: #f1f5f9; }
+        .card-header .card-badge {
+            margin-left: auto; background: rgba(52,211,153,0.1); color: #34d399;
+            padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500;
+            color: #94a3b8;
+        }
+        .form-group label i { margin-right: 6px; color: #34d399; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 11px 14px; background: #0f172a;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            color: #e2e8f0; font-size: 14px; font-family: inherit; transition: all 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none; border-color: #34d399; box-shadow: 0 0 0 3px rgba(52,211,153,0.1);
+        }
+        .form-group textarea { min-height: 90px; resize: vertical; }
+        .form-group small { display: block; margin-top: 4px; font-size: 12px; color: #64748b; }
+        .form-group .required { color: #ef4444; }
+
+        .form-group input[type="file"] {
+            padding: 10px; background: rgba(52,211,153,0.05);
+            border: 2px dashed rgba(52,211,153,0.2); cursor: pointer;
+        }
+        .form-group input[type="file"]:hover { border-color: rgba(52,211,153,0.4); }
+
+        .form-check { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+        .form-check input[type="checkbox"] { width: 18px; height: 18px; accent-color: #34d399; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
+            border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;
+            border: none; transition: all 0.2s; font-family: inherit;
+        }
+        .btn-primary { background: linear-gradient(135deg, #34d399, #059669); color: #fff; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(52,211,153,0.3); }
+        .btn-danger { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+        .btn-danger:hover { background: rgba(239,68,68,0.25); }
+        .btn-edit { background: rgba(96,165,250,0.15); color: #60a5fa; border: 1px solid rgba(96,165,250,0.2); }
+        .btn-edit:hover { background: rgba(96,165,250,0.25); }
+        .btn-sm { padding: 8px 14px; font-size: 12px; }
+
+        /* Table */
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600;
+             color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;
+             border-bottom: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.2); }
+        td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.04);
+             font-size: 14px; color: #cbd5e1; }
+        tr:hover td { background: rgba(52,211,153,0.03); }
+        .actions-cell { display: flex; gap: 6px; }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 16px; padding: 16px; background: rgba(0,0,0,0.2);
+            border-radius: 10px; display: none;
+        }
+        .progress-bar-bg { background: rgba(255,255,255,0.06); border-radius: 8px; height: 10px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #34d399, #059669);
+                             transition: width 0.3s; width: 0%; border-radius: 8px; }
+        .progress-text { margin-top: 8px; font-size: 13px; color: #94a3b8; }
+
+        /* Toast */
+        .toast { position: fixed; top: 24px; right: 24px; padding: 14px 20px; border-radius: 10px;
+                 font-size: 14px; font-weight: 500; z-index: 1000; transform: translateX(120%);
+                 transition: transform 0.3s ease; max-width: 400px; }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: #065f46; color: #34d399; border: 1px solid rgba(52,211,153,0.2); }
+        .toast.error { background: #7f1d1d; color: #fca5a5; border: 1px solid rgba(239,68,68,0.2); }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                         background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 100;
+                         align-items: center; justify-content: center; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: #1e293b; border: 1px solid rgba(255,255,255,0.08);
+                     border-radius: 16px; padding: 28px; width: 90%; max-width: 600px;
+                     max-height: 85vh; overflow-y: auto; }
+        .modal-close { float: right; background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer; }
+        .modal-close:hover { color: #ef4444; }
+
+        .mobile-toggle {
+            display: none; background: #1e293b; border: 1px solid rgba(255,255,255,0.1);
+            color: #34d399; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 16px;
+        }
+        .sidebar-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 9;
+        }
+        .sidebar-overlay.active { display: block; }
+
+        @media (max-width: 992px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle { display: inline-flex; align-items: center; justify-content: center; }
+            .sidebar {
+                transform: translateX(-100%); transition: transform 0.3s ease; width: 260px;
+            }
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .main-content { margin-left: 0; padding: 16px; width: 100%; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .page-header { flex-direction: row; flex-wrap: wrap; gap: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 16px; }
+            .modal-box { padding: 20px 14px; width: 95%; }
+            th, td { padding: 10px 12px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <div class="sidebar" id="admin-sidebar">
+            <div class="sidebar-brand">
+                <i class="fas fa-book-reader"></i>
+                <h2>Note<span>Folio</span></h2>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-chart-pie"></i><span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-section="add-notes">
+                    <i class="fas fa-plus-circle"></i><span>Add Notes</span>
+                </div>
+                <div class="nav-item" data-section="handwritten">
+                    <i class="fas fa-pen-fancy"></i><span>Handwritten Notes</span>
+                </div>
+                <div class="nav-item" data-section="manage-notes">
+                    <i class="fas fa-th-list"></i><span>Manage Notes</span>
+                </div>
+                <div class="nav-item" data-section="manage-users">
+                    <i class="fas fa-users"></i><span>Manage Users</span>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="index.html" style="color:#94a3b8; text-decoration:none; display:flex; align-items:center; gap:8px; padding:10px 12px; font-size:13px; margin-bottom:8px;">
+                    <i class="fas fa-external-link-alt"></i> View Marketplace
+                </a>
+                <button class="logout-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="page-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <button class="mobile-toggle" id="mobile-sidebar-toggle" title="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>Admin Dashboard</h1>
+                </div>
+                <div class="badge"><i class="fas fa-shield-alt"></i> Admin Access</div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <section class="admin-section active" id="section-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-book"></i></div>
+                        <div class="stat-value" id="total-notes">0</div>
+                        <div class="stat-label">Total Notes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-value" id="total-users">0</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
+                        <div class="stat-value" id="total-orders">0</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+                        <div class="stat-value" id="total-revenue">₹0</div>
+                        <div class="stat-label">Total Revenue</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Notes Section -->
+            <section class="admin-section" id="section-add-notes">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Add New Note</h3>
+                        <div class="card-badge">NEW</div>
+                    </div>
+                    <form id="add-note-form" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-heading"></i> Title <span class="required">*</span></label>
+                                <input type="text" name="title" placeholder="e.g., Data Structures & Algorithms" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> Subject <span class="required">*</span></label>
+                                <input type="text" name="subject" placeholder="e.g., CS, Mathematics" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-rupee-sign"></i> Price (₹) <span class="required">*</span></label>
+                                <input type="number" name="price" placeholder="249" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> Semester</label>
+                                <select name="semester">
+                                    <option value="1">Semester 1</option><option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option><option value="4">Semester 4</option>
+                                    <option value="5">Semester 5</option><option value="6">Semester 6</option>
+                                    <option value="7">Semester 7</option><option value="8">Semester 8</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-file-alt"></i> Total Pages</label>
+                                <input type="number" name="pages" placeholder="e.g. 50" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-align-left"></i> Description <span class="required">*</span></label>
+                            <textarea name="description" placeholder="Describe the content, topics covered..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-list-ol"></i> Chapters (JSON)</label>
+                            <textarea name="chapters" rows="2" placeholder='[{"title": "Chapter 1", "pages": "1-10"}]'></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-image"></i> Cover Image</label>
+                                <input type="file" name="image" accept="image/*">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-file-pdf"></i> PDF File <span class="required">*</span></label>
+                                <input type="file" name="pdfUrl" accept="application/pdf" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Note</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Handwritten Notes Section -->
+            <section class="admin-section" id="section-handwritten">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-pen-fancy"></i>
+                        <h3>Upload Handwritten Notes</h3>
+                        <div class="card-badge">PDF ONLY</div>
+                    </div>
+                    <form id="handwritten-notes-form" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-heading"></i> Title <span class="required">*</span></label>
+                                <input type="text" id="handwritten-title" name="title" placeholder="e.g., Physics Chapter 1 - Handwritten Notes" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> Subject <span class="required">*</span></label>
+                                <input type="text" id="handwritten-subject" name="subject" placeholder="e.g., Physics, Chemistry" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-rupee-sign"></i> Price (₹) <span class="required">*</span></label>
+                                <input type="number" id="handwritten-price" name="price" placeholder="199" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> Semester <span class="required">*</span></label>
+                                <select id="handwritten-semester" name="semester" required>
+                                    <option value="">Select Semester</option>
+                                    <option value="1">Semester 1</option><option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option><option value="4">Semester 4</option>
+                                    <option value="5">Semester 5</option><option value="6">Semester 6</option>
+                                    <option value="7">Semester 7</option><option value="8">Semester 8</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-file-alt"></i> Total Pages</label>
+                                <input type="number" id="handwritten-pages" name="pages" placeholder="e.g. 50" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-align-left"></i> Description <span class="required">*</span></label>
+                            <textarea id="handwritten-description" name="description" placeholder="Describe the content, topics covered, quality..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-list-ol"></i> Chapters (JSON)</label>
+                            <textarea id="handwritten-chapters" name="chapters" rows="2" placeholder='[{"title": "Ch 1: Introduction", "pages": "1-15"}]'></textarea>
+                            <small>Format: [{"title": "Chapter Name", "pages": "page range"}]</small>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-image"></i> Cover Image (Optional)</label>
+                                <input type="file" id="handwritten-cover" name="image" accept="image/*">
+                                <small>Upload a preview or first page screenshot</small>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-file-pdf"></i> Handwritten PDF <span class="required">*</span></label>
+                                <input type="file" id="handwritten-pdf" name="pdfUrl" accept="application/pdf" required>
+                                <small style="color: #fbbf24;">⚠ PDF only, max 50MB</small>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="handwritten-quality-check" required>
+                            <label for="handwritten-quality-check" style="margin-bottom:0">I confirm the PDF is clear, readable, and of good quality</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Upload Handwritten Notes</button>
+
+                        <div class="progress-container" id="upload-progress">
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" id="progress-bar"></div>
+                            </div>
+                            <div class="progress-text" id="upload-status">Uploading...</div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Manage Notes Section -->
+            <section class="admin-section" id="section-manage-notes">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-th-list"></i>
+                        <h3>All Notes</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th><th>Subject</th><th>Price</th>
+                                    <th>Semester</th><th>Type</th><th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notes-table-body">
+                                <tr><td colspan="6" style="text-align:center;color:#64748b;">Loading notes...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Edit Note Modal -->
+            <div class="modal-overlay" id="editNoteModal">
+                <div class="modal-box">
+                    <button class="modal-close" id="close-edit-modal">&times;</button>
+                    <div class="card-header" style="border:none;padding:0;margin-bottom:20px;">
+                        <i class="fas fa-edit"></i><h3>Edit Note</h3>
+                    </div>
+                    <form id="edit-note-form" enctype="multipart/form-data">
+                        <input type="hidden" id="edit-note-id">
+                        <div class="form-row">
+                            <div class="form-group"><label>Title</label><input type="text" id="edit-note-title" name="title" required></div>
+                            <div class="form-group"><label>Subject</label><input type="text" id="edit-note-subject" name="subject" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Price (₹)</label><input type="number" id="edit-note-price" name="price" required></div>
+                            <div class="form-group"><label>Semester</label>
+                                <select id="edit-note-semester" name="semester">
+                                    <option value="1">Sem 1</option><option value="2">Sem 2</option>
+                                    <option value="3">Sem 3</option><option value="4">Sem 4</option>
+                                    <option value="5">Sem 5</option><option value="6">Sem 6</option>
+                                    <option value="7">Sem 7</option><option value="8">Sem 8</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label>Total Pages</label><input type="number" id="edit-note-pages" name="pages" required></div>
+                        </div>
+                        <div class="form-group"><label>Description</label><textarea id="edit-note-description" name="description" required></textarea></div>
+                        <div class="form-group"><label>Chapters (JSON)</label><textarea id="edit-note-chapters" name="chapters" rows="2"></textarea></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>New Image (optional)</label><input type="file" name="image" accept="image/*"></div>
+                            <div class="form-group"><label>New PDF (optional)</label><input type="file" name="pdfUrl" accept="application/pdf"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Manage Users Section -->
+            <section class="admin-section" id="section-manage-users">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-users"></i>
+                        <h3>All Users</h3>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th><th>Email</th><th>Role</th>
+                                    <th>Joined</th><th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <tr><td colspan="5" style="text-align:center;color:#64748b;">Loading users...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>

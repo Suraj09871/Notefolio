@@ -1,0 +1,16 @@
+[build]
+  command = "echo 'No build required'"
+  publish = "."
+
+[build.environment]
+  NETLIFY_NEXT_DISABLE = "true"
+  NEXT_PLUGIN_FORCE_RUN = "false"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200

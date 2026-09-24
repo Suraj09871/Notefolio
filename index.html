@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteFolio - Digital Notes for Students</title>
+    <link rel="stylesheet" href="styles.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Added Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+    /* Category Cards */
+.categories-section,
+.branch-categories-section {
+  margin: 60px 0;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.section-title h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.section-title p {
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.view-all-link {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  color: #3f51b5;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.view-all-link i {
+  margin-left: 5px;
+}
+
+.categories-grid,
+.branches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.category-card,
+.branch-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.category-card:hover,
+.branch-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.category-icon,
+.branch-icon {
+  font-size: 40px;
+  color: #3f51b5;
+  margin-bottom: 15px;
+}
+
+.category-card h3,
+.branch-card h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.category-card p,
+.branch-card p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Semester Tabs */
+.semester-notes-section {
+  margin: 60px 0;
+}
+
+.semester-tabs {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.semester-tab {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+}
+
+.semester-tab:hover {
+  color: #3f51b5;
+}
+
+.semester-tab.active {
+  color: #3f51b5;
+  border-bottom-color: #3f51b5;
+}
+
+/* Featured Notes */
+.featured-notes-section {
+  margin: 60px 0;
+}
+
+.featured-notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.note-card {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.note-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.note-image {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+
+.note-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.note-card:hover .note-image img {
+  transform: scale(1.05);
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.wishlist-btn:hover {
+  color: #e91e63;
+  transform: scale(1.1);
+}
+
+.wishlist-btn.active i {
+  color: #e91e63;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  margin: 60px 0;
+  background-color: #f9f9f9;
+  padding: 60px 0;
+  border-radius: 10px;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.testimonial-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+}
+
+.testimonial-rating {
+  color: #ffc107;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.testimonial-text {
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+.author-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #3f51b5;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.author-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.author-course {
+  color: #666;
+  font-size: 14px;
+}
+
+.stats-container {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.stat-box {
+  text-align: center;
+  flex: 1;
+}
+
+.avatars-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #333;
+  margin: 0 -5px;
+  border: 2px solid #fff;
+}
+
+.avatar:nth-child(1) { background-color: #bbdefb; }
+.avatar:nth-child(2) { background-color: #c8e6c9; }
+.avatar:nth-child(3) { background-color: #ffecb3; }
+
+.stat-text {
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.stat-label {
+  color: #666;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.stat-value {
+  font-weight: bold;
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+.stats-divider {
+  width: 1px;
+  height: 50px;
+  background-color: #ddd;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .view-all-link {
+    position: static;
+    margin-top: 10px;
+    justify-content: center;
+  }
+  
+  .stats-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .stats-divider {
+    width: 80%;
+    height: 1px;
+  }
+  
+  .semester-tabs {
+    justify-content: flex-start;
+  }
+}
+
+/* Global Search Bar Styles */
+.global-search-section {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.global-search-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.global-search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.global-search-form input[type="text"] {
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  width: 70%;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.global-search-form .search-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.global-search-form .search-btn:hover {
+  background-color: #0056b3;
+}
+
+.search-filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.search-filters select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Responsive adjustments for the search bar */
+@media (max-width: 768px) {
+  .global-search-form {
+    flex-direction: column;
+  }
+
+  .global-search-form input[type="text"] {
+    width: 90%;
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+
+  .search-filters {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-filters select {
+    width: 80%;
+    margin-bottom: 10px;
+  }
+}
+
+/* New styles for the updated branch cards section */
+.branches {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.branches .container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.branches h2 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.branches .branch-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.branches .branch-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  width: 300px; /* Fixed width for each card */
+}
+
+.branches .branch-card:hover {
+  transform: translateY(-5px);
+}
+
+.branches .branch-icon {
+  font-size: 3em;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.branches .branch-card h3 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.branches .branch-card p {
+  font-size: 1em;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+  .branches .branch-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .branches .branch-card {
+    width: 90%; /* Make cards take up more width on smaller screens */
+    max-width: 400px; /* Limit the maximum width */
+  }
+
+  .branches h2 {
+    font-size: 2em; /* Slightly smaller heading on smaller screens */
+  }
+}
+
+/* Enhanced branch cards with modern styling */
+.branches.modern-branches .branch-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+.branches.modern-branches .branch-card:hover {
+  background-color: #fff;
+}
+
+.branches.modern-branches .branch-icon {
+  color: #007bff;
+}
+
+.branches.modern-branches .card-stats {
+  margin-top: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Enhanced testimonials with modern design */
+.testimonials-section.modern-testimonials .testimonial-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+.testimonials-section.modern-testimonials .testimonial-card:hover {
+  background-color: #fff;
+}
+
+.testimonials-section.modern-testimonials .testimonial-rating {
+  color: #ffc107;
+}
+
+.testimonials-section.modern-testimonials .testimonial-text {
+  color: #333;
+}
+
+.testimonials-section.modern-testimonials .testimonial-author {
+  margin-top: 20px;
+}
+
+.testimonials-section.modern-testimonials .author-avatar {
+  background-color: #007bff;
+}
+
+.testimonials-section.modern-testimonials .author-name {
+  color: #333;
+}
+
+.testimonials-section.modern-testimonials .author-course {
+  color: #666;
+}
+
+.testimonials-section.modern-testimonials .stats-container {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+.testimonials-section.modern-testimonials .stat-box {
+  padding: 15px;
+}
+
+.testimonials-section.modern-testimonials .stat-text {
+  color: #333;
+}
+
+.testimonials-section.modern-testimonials .stat-label {
+  color: #666;
+}
+
+.testimonials-section.modern-testimonials .stat-value {
+  color: #333;
+}
+
+.testimonials-section.modern-testimonials .stats-divider {
+  background-color: #ddd;
+}
+    </style>
+    <!-- Google Identity Services for Sign-In -->
+    <meta name="google-client-id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <!-- Enhanced header with mobile-friendly navigation -->
+    <header class="modern-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/Logo/logo1.png" alt="NoteFolio Logo" class="logo-image">
+                    <span>Note</span>Folio
+                </a>
+            </div>
+            
+            <!-- Added mobile menu toggle -->
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="my-notes.html">My Notes</a></li>
+                    <li><a href="my-orders.html">My Orders</a></li>
+                    <li>
+                        <a href="cart.html" class="cart-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cart-count-header">0</span>
+                        </a>
+                    </li>
+                    <li><button id="login-btn" class="login-btn"><i class="fas fa-user"></i> Login</button></li>
+                    <li><button id="signup-btn" class="signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Enhanced hero section with modern design -->
+        <section class="hero-section modern-hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1>Study Smarter with <span class="highlight">Digital Notes</span></h1>
+                    <p>Access comprehensive study materials anytime, anywhere. Buy once, read online, and download for offline study.</p>
+                    <div class="hero-buttons">
+                        <a href="#notes" class="btn primary-btn">Browse Notes</a>
+                        <a href="my-notes.html" class="btn secondary-btn">My Library</a>
+                    </div>
+                </div>
+                <div class="hero-image-container">
+                    <img src="images/Student studying .jpg" alt="Students studying with digital notes" class="hero-image">
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced search section with modern styling -->
+        <section class="search-section modern-search">
+            <div class="search-container">
+                <h2>Find Your Perfect Study Material</h2>
+                <form id="global-search-form" class="search-form">
+                    <div class="search-input-group">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="global-search-input" placeholder="Search for notes, subjects, topics...">
+                        <button type="submit" class="search-btn">Search</button>
+                    </div>
+                </form>
+                <div class="search-filters">
+                    <select id="subject-filter">
+                        <option value="all">All Subjects</option>
+                        <option value="CS">Computer Science</option>
+                        <option value="BBA">Business Administration</option>
+                        <option value="LAW">Law</option>
+                        <option value="MED">Medical</option>
+                        <option value="COM">Commerce</option>
+                    </select>
+                    <select id="sort-filter">
+                        <option value="popular">Most Popular</option>
+                        <option value="newest">Newest First</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Added PDF upload section for admin users -->
+        <section class="upload-section" id="upload-section" style="display: none;">
+            <div class="upload-container">
+                <div class="upload-header">
+                    <h2><i class="fas fa-cloud-upload-alt"></i> Upload Handwritten Notes</h2>
+                    <p>Share your handwritten notes with fellow students</p>
+                </div>
+                <form id="pdf-upload-form" class="upload-form">
+                    <div class="form-group">
+                        <label for="note-title">Note Title</label>
+                        <input type="text" id="note-title" required placeholder="Enter note title">
+                    </div>
+                    <div class="form-group">
+                        <label for="note-subject">Subject</label>
+                        <select id="note-subject" required>
+                            <option value="">Select Subject</option>
+                            <option value="CS">Computer Science</option>
+                            <option value="BBA">Business Administration</option>
+                            <option value="LAW">Law</option>
+                            <option value="MED">Medical</option>
+                            <option value="COM">Commerce</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="note-semester">Semester</label>
+                        <select id="note-semester" required>
+                            <option value="">Select Semester</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                            <option value="7">Semester 7</option>
+                            <option value="8">Semester 8</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="note-price">Price (₹)</label>
+                        <input type="number" id="note-price" required placeholder="Enter price" min="0" step="0.01">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="note-description">Description</label>
+                        <textarea id="note-description" required placeholder="Describe the content of your notes"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="pdf-file" class="file-upload-label">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Choose PDF File</span>
+                            <input type="file" id="pdf-file" accept=".pdf" required>
+                        </label>
+                        <div class="file-info" id="file-info" style="display: none;">
+                            <span class="file-name"></span>
+                            <span class="file-size"></span>
+                        </div>
+                    </div>
+                    <div class="upload-progress" id="upload-progress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <span class="progress-text" id="progress-text">0%</span>
+                    </div>
+                    <button type="submit" class="btn primary-btn upload-btn">
+                        <i class="fas fa-upload"></i> Upload Notes
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="offers-section">
+            <div class="section-title">
+                <h2>Special Offers</h2>
+                <p>Take advantage of these limited-time discounts on our digital notes</p>
+            </div>
+            <div class="offers-container">
+                <div class="offer-card">
+                    <h3><i class="fas fa-tag"></i> New User Discount</h3>
+                    <p>First-time users get 10% off on their first purchase. Perfect for trying out our digital notes.</p>
+                    <p>Use code: <span class="offer-code">NEW10</span></p>
+                </div>
+                <div class="offer-card">
+                    <h3><i class="fas fa-graduation-cap"></i> Student Discount</h3>
+                    <p>Verified students get 20% off on all purchases. Just verify your student email.</p>
+                    <p>Use code: <span class="offer-code">STUDENT20</span></p>
+                </div>
+                <div class="offer-card">
+                    <h3><i class="fas fa-layer-group"></i> Bundle Discount</h3>
+                    <p>Buy 3 or more notes and get 15% off your entire order. Great for comprehensive study.</p>
+                    <p>Use code: <span class="offer-code">BUNDLE15</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced branch cards with modern styling -->
+        <section class="branches modern-branches">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Academic Branches</h2>
+                    <p>Choose your field of study</p>
+                </div>
+                <div class="branch-cards">
+                    <div class="branch-card">
+                        <div class="branch-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3>B.Tech</h3>
+                        <p>Engineering notes for all semesters</p>
+                        <div class="card-stats">
+                            <span><i class="fas fa-book"></i> 200+ Notes</span>
+                        </div>
+                    </div>
+                    <div class="branch-card">
+                        <div class="branch-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>BBA</h3>
+                        <p>Business administration study materials</p>
+                        <div class="card-stats">
+                            <span><i class="fas fa-book"></i> 150+ Notes</span>
+                        </div>
+                    </div>
+                    <div class="branch-card">
+                        <div class="branch-icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <h3>Law</h3>
+                        <p>Legal studies and case analyses</p>
+                        <div class="card-stats">
+                            <span><i class="fas fa-book"></i> 100+ Notes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Semester-wise Notes Section -->
+        <section id="notes" class="semester-notes-section">
+            <div class="section-title">
+                <h2>Semester-wise Notes</h2>
+                <p>Find comprehensive study materials for each semester</p>
+            </div>
+            
+            <div class="semester-tabs">
+                <button class="semester-tab active" data-semester="1">Semester 1</button>
+                <button class="semester-tab" data-semester="2">Semester 2</button>
+                <button class="semester-tab" data-semester="3">Semester 3</button>
+                <button class="semester-tab" data-semester="4">Semester 4</button>
+                <button class="semester-tab" data-semester="5">Semester 5</button>
+                <button class="semester-tab" data-semester="6">Semester 6</button>
+                <button class="semester-tab" data-semester="7">Semester 7</button>
+                <button class="semester-tab" data-semester="8">Semester 8</button>
+            </div>
+            
+            <div id="notes-container" class="notes-grid">
+                <!-- Notes will be loaded here via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Enhanced testimonials with modern design -->
+        <section class="testimonials-section modern-testimonials">
+            <div class="section-header">
+                <h2>What Our Students Say</h2>
+                <p>Hear from students who have improved their academic performance with NoteFolio</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"NoteFolio has been a game-changer for my exam preparation. The notes are well-structured and cover all important topics in detail. I improved my scores significantly this semester!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RS</div>
+                        <div class="author-info">
+                            <p class="author-name">Rahul Sharma</p>
+                            <p class="author-course">B.Tech, Computer Science</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-text">"The quality of notes on NoteFolio is exceptional. The explanations are clear and concise, making complex topics easy to understand. Worth every rupee!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PP</div>
+                        <div class="author-info">
+                            <p class="author-name">Priya Patel</p>
+                            <p class="author-course">B.Tech, Electrical Engineering</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"NoteFolio saved me so much time! Instead of spending hours making notes, I could focus on understanding the concepts. The highlighting and note-taking features are super helpful."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AM</div>
+                        <div class="author-info">
+                            <p class="author-name">Arjun Mehta</p>
+                            <p class="author-course">B.Tech, Mechanical Engineering</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="avatars-group">
+                        <div class="avatar">MR</div>
+                        <div class="avatar">SB</div>
+                        <div class="avatar">AK</div>
+                    </div>
+                    <p class="stat-text">4,500+ students trust us</p>
+                </div>
+                
+                <div class="stats-divider"></div>
+                
+                <div class="stat-box">
+                    <p class="stat-label">Rating</p>
+                    <p class="stat-value">4.9/5</p>
+                </div>
+                
+                <div class="stats-divider"></div>
+                
+                <div class="stat-box">
+                    <p class="stat-label">Notes</p>
+                    <p class="stat-value">500+</p>
+                </div>
+                
+                <div class="stats-divider"></div>
+                
+                <div class="stat-box">
+                    <p class="stat-label">Subjects</p>
+                    <p class="stat-value">50+</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p class="form-switch">Don't have an account? <a href="#" id="switch-to-signup">Sign up</a></p>
+            </form>
+                <div class="auth-divider"><span>OR</span></div>
+                <div class="google-signin-btn" id="google-login-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg> Sign in with Google</div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <p class="form-switch">Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+            </form>
+                <div class="auth-divider"><span>OR</span></div>
+                <div class="google-signin-btn" id="google-signup-btn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg> Sign in with Google</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="images/Logo/logo1.png" alt="NoteFolio Logo" class="logo-image">
+                <span>Note</span>Folio
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="my-notes.html">My Notes</a></li>
+                    <li><a href="my-orders.html">My Orders</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="login.html" style="color: #34d399;"><i class="fas fa-shield-alt"></i> Admin Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> support@notefolio.com</p>
+                <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 NoteFolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="script.js?v=4"></script>
+    <!-- Added mobile menu functionality -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
+            const nav = document.getElementById('main-nav');
+            nav.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+
+        // PDF upload functionality
+        document.getElementById('pdf-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const fileInfo = document.getElementById('file-info');
+            
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    alert('Please select a PDF file only.');
+                    this.value = '';
+                    return;
+                }
+                
+                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    alert('File size should be less than 10MB.');
+                    this.value = '';
+                    return;
+                }
+                
+                fileInfo.style.display = 'block';
+                fileInfo.querySelector('.file-name').textContent = file.name;
+                fileInfo.querySelector('.file-size').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            } else {
+                fileInfo.style.display = 'none';
+            }
+        });
+
+        // Show upload section for admin users
+        function checkAdminStatus() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (user.isAdmin) {
+                document.getElementById('upload-section').style.display = 'block';
+            }
+        }
+
+        // Check admin status on page load
+        document.addEventListener('DOMContentLoaded', checkAdminStatus);
+    </script>
+</body>
+</html>

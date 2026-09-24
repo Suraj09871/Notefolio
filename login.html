@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal Login - NoteFolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif; background: #0f172a; color: #e2e8f0;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            background-image: radial-gradient(circle at 20% 50%, rgba(52,211,153,0.08) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 50%, rgba(96,165,250,0.08) 0%, transparent 50%);
+            padding: 16px;
+        }
+        .login-wrapper {
+            display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 440px;
+        }
+        .brand { text-align: center; margin-bottom: 28px; }
+        .brand-icon {
+            font-size: 40px; color: #34d399; margin-bottom: 10px;
+            display: inline-block; background: rgba(52,211,153,0.1); width: 72px; height: 72px;
+            line-height: 72px; border-radius: 20px; border: 1px solid rgba(52,211,153,0.2);
+        }
+        .brand h1 { font-size: 28px; font-weight: 700; color: #f1f5f9; letter-spacing: -0.5px; }
+        .brand h1 span { color: #34d399; }
+        .brand p { color: #94a3b8; font-size: 14px; margin-top: 4px; }
+
+        .login-card {
+            width: 100%; background: #1e293b; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px; padding: 32px 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+        .login-card h2 {
+            font-size: 20px; font-weight: 600; color: #f1f5f9; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .login-card h2 i { color: #34d399; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block; font-size: 13px; font-weight: 500; color: #94a3b8; margin-bottom: 6px;
+        }
+        .input-wrapper {
+            position: relative; display: flex; align-items: center;
+        }
+        .input-wrapper i.prefix-icon {
+            position: absolute; left: 14px; color: #64748b; font-size: 15px;
+        }
+        .input-wrapper input {
+            width: 100%; padding: 12px 42px 12px 42px; background: #0f172a;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            color: #e2e8f0; font-size: 14px; font-family: inherit; transition: all 0.2s;
+        }
+        .input-wrapper input:focus {
+            outline: none; border-color: #34d399; box-shadow: 0 0 0 3px rgba(52,211,153,0.15);
+        }
+        .input-wrapper input::placeholder { color: #475569; }
+        .toggle-key-btn {
+            position: absolute; right: 12px; background: none; border: none;
+            color: #64748b; cursor: pointer; font-size: 14px; padding: 4px;
+        }
+        .toggle-key-btn:hover { color: #34d399; }
+
+        .login-btn {
+            width: 100%; padding: 13px; border: none; border-radius: 10px;
+            background: linear-gradient(135deg, #34d399, #059669); color: #fff;
+            font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 6px;
+        }
+        .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(52,211,153,0.3); }
+        .login-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        .error-msg {
+            margin-top: 16px; padding: 10px 14px; background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.2); border-radius: 8px;
+            color: #fca5a5; font-size: 13px; display: none; text-align: center;
+        }
+        .error-msg.show { display: block; }
+
+        .key-info-box {
+            margin-top: 20px; padding: 14px; background: rgba(52, 211, 153, 0.06);
+            border: 1px dashed rgba(52, 211, 153, 0.3); border-radius: 10px; text-align: left;
+        }
+        .key-info-box .title {
+            color: #34d399; font-size: 12px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+        }
+        .key-info-box p {
+            color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 3px;
+        }
+        .key-info-box code {
+            background: #0f172a; color: #34d399; padding: 2px 6px; border-radius: 4px;
+            font-family: monospace; font-size: 12px;
+        }
+
+        .back-link {
+            text-align: center; margin-top: 22px;
+        }
+        .back-link a {
+            color: #94a3b8; font-size: 13px; text-decoration: none; transition: color 0.2s;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .back-link a:hover { color: #34d399; }
+
+        @media (max-width: 480px) {
+            .login-card { padding: 24px 18px; }
+            .brand h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="brand">
+            <div class="brand-icon"><i class="fas fa-shield-alt"></i></div>
+            <h1>Note<span>Folio</span></h1>
+            <p>Admin Security Portal</p>
+        </div>
+
+        <div class="login-card">
+            <h2><i class="fas fa-key"></i> Admin Access</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="admin-email">Admin Email / Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope prefix-icon"></i>
+                        <input type="text" id="admin-email" placeholder="admin@notefolio.com" value="admin@notefolio.com" required autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="admin-key">Admin Security Key / Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock prefix-icon"></i>
+                        <input type="password" id="admin-key" placeholder="Enter admin secret key" value="admin_key_2026" required>
+                        <button type="button" class="toggle-key-btn" id="toggle-key-visibility" title="Toggle visibility">
+                            <i class="fas fa-eye" id="eye-icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="login-btn" id="login-submit">
+                    <i class="fas fa-sign-in-alt"></i> Authenticate & Enter
+                </button>
+                <div class="error-msg" id="error-message"></div>
+                
+                <div class="key-info-box">
+                    <div class="title"><i class="fas fa-info-circle"></i> Default Security Credentials</div>
+                    <p><strong>Admin Email:</strong> <code>admin@notefolio.com</code> (or <code>admin</code>)</p>
+                    <p><strong>Admin Key:</strong> <code>admin_key_2026</code> (or <code>admin123</code>)</p>
+                </div>
+            </form>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Return to NoteFolio Marketplace</a>
+        </div>
+    </div>
+
+    <script>
+        const keyInput = document.getElementById('admin-key');
+        const eyeIcon = document.getElementById('eye-icon');
+        const toggleBtn = document.getElementById('toggle-key-visibility');
+
+        toggleBtn.addEventListener('click', () => {
+            if (keyInput.type === 'password') {
+                keyInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                keyInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value.trim();
+            const adminKey = document.getElementById('admin-key').value.trim();
+            const errorDiv = document.getElementById('error-message');
+            const btn = document.getElementById('login-submit');
+
+            errorDiv.classList.remove('show');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, adminKey, username: email, password: adminKey })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    localStorage.setItem('adminToken', data.token);
+                    if (data.admin) {
+                        localStorage.setItem('adminUser', JSON.stringify(data.admin));
+                    }
+                    btn.innerHTML = '<i class="fas fa-check"></i> Authenticated!';
+                    setTimeout(() => { window.location.href = 'admin-panel.html'; }, 400);
+                } else {
+                    errorDiv.textContent = data.message || 'Invalid admin credentials or security key';
+                    errorDiv.classList.add('show');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Authenticate & Enter';
+                }
+            } catch (err) {
+                errorDiv.textContent = 'Network or server error. Please try again.';
+                errorDiv.classList.add('show');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Authenticate & Enter';
+            }
+        });
+    </script>
+</body>
+</html>

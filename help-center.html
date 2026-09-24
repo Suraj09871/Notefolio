@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help Center - NoteFolio</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .help-center-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .help-center-header {
+      text-align: center;
+      margin-bottom: 40px;
+      background-color: #f9f9f9;
+      padding: 40px 20px;
+      border-radius: 8px;
+    }
+    
+    .help-center-header h1 {
+      font-size: 32px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .help-center-header p {
+      color: #666;
+      margin-bottom: 20px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .help-search {
+      display: flex;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .help-search input {
+      flex: 1;
+      padding: 15px 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px 0 0 8px;
+      font-size: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .help-search button {
+      padding: 15px 25px;
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    
+    .help-search button:hover {
+      background-color: #303f9f;
+    }
+    
+    .help-categories {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+    }
+    
+    .help-category {
+      margin-bottom: 30px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    
+    .help-category:hover {
+      transform: translateY(-5px);
+    }
+    
+    .help-category h2 {
+      padding: 20px;
+      margin: 0;
+      background-color: #f5f5f5;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+    }
+    
+    .help-category h2 i {
+      margin-right: 12px;
+      color: #3f51b5;
+      font-size: 24px;
+    }
+    
+    .help-items {
+      padding: 0 20px;
+    }
+    
+    .help-item {
+      border-bottom: 1px solid #eee;
+      padding: 5px 0;
+      transition: all 0.3s ease;
+    }
+    
+    .help-item:last-child {
+      border-bottom: none;
+    }
+    
+    .help-item h3 {
+      margin: 0;
+      padding: 15px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 17px;
+      color: #333;
+      font-weight: 500;
+    }
+    
+    .help-item h3::after {
+      content: '\f107';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      transition: transform 0.3s ease;
+      color: #3f51b5;
+    }
+    
+    .help-item.active h3::after {
+      transform: rotate(180deg);
+    }
+    
+    .help-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      color: #666;
+      padding-left: 5px;
+      line-height: 1.6;
+    }
+    
+    .help-item.active .help-content {
+      max-height: 500px;
+      padding-bottom: 20px;
+    }
+    
+    .help-item.highlight {
+      background-color: #fffde7;
+      padding: 0 10px;
+      border-radius: 4px;
+    }
+    
+    .why-us-section {
+      margin: 60px 0;
+      padding: 40px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .why-us-section h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+      color: #333;
+    }
+    
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    
+    .benefit-item {
+      text-align: center;
+      padding: 30px 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      transition: transform 0.3s;
+    }
+    
+    .benefit-item:hover {
+      transform: translateY(-5px);
+    }
+    
+    .benefit-icon {
+      font-size: 40px;
+      color: #3f51b5;
+      margin-bottom: 20px;
+    }
+    
+    .benefit-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .benefit-description {
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .contact-support {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      padding: 40px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    
+    .contact-support h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #333;
+    }
+    
+    .contact-support p {
+      margin-bottom: 30px;
+      color: #666;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    
+    .contact-cards {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .contact-card {
+      background-color: #f9f9f9;
+      padding: 25px;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 200px;
+      flex: 1;
+      max-width: 250px;
+      transition: all 0.3s;
+    }
+    
+    .contact-card:hover {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transform: translateY(-5px);
+    }
+    
+    .contact-card i {
+      font-size: 40px;
+      color: #3f51b5;
+      margin-bottom: 15px;
+    }
+    
+    .contact-card h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    
+    .contact-card p {
+      margin-bottom: 0;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .support-form {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    
+    .support-form .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .support-form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .support-form input,
+    .support-form textarea,
+    .support-form select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    
+    .support-form textarea {
+      height: 150px;
+      resize: vertical;
+    }
+    
+    .support-form button {
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      padding: 14px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    
+    .support-form button:hover {
+      background-color: #303f9f;
+    }
+  </style>
+    <!-- Google Identity Services for Sign-In -->
+    <meta name="google-client-id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html"><img src="images/Logo/logo1.png" alt="NoteFolio Logo" class="logo-image"><span>Note</span>Folio</a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="my-notes.html">My Notes</a></li>
+        <li><a href="my-orders.html">My Orders</a></li>
+        <li><a href="downloads.html">Downloads</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li>
+          <a href="cart.html" class="cart-link">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cart-count-header">0</span>
+          </a>
+        </li>
+        <li><button id="login-btn" class="login-btn"><i class="fas fa-user"></i> Login</button></li>
+        <li><button id="signup-btn" class="signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="help-center-container" id="help-center-container">
+      <div class="help-center-header">
+        <h1>How Can We Help You?</h1>
+        <p>Find answers to common questions, get support, or reach out to our team for assistance with any issues.</p>
+        <div class="help-search">
+          <input type="text" id="help-search-input" placeholder="Search for help articles...">
+          <button id="help-search-btn"><i class="fas fa-search"></i> Search</button>
+        </div>
+      </div>
+      
+      <div class="help-categories">
+        <div class="help-category">
+          <h2><i class="fas fa-shopping-cart"></i> Orders & Payments</h2>
+          <div class="help-items">
+            <div class="help-item">
+              <h3>How do I place an order?</h3>
+              <div class="help-content">
+                <p>To place an order on NoteFolio:</p>
+                <ol>
+                  <li>Browse our collection of notes or use the search function to find specific topics</li>
+                  <li>Click on the note you're interested in to view more details</li>
+                  <li>Click the "Add to Cart" button</li>
+                  <li>Review your cart and proceed to checkout</li>
+                  <li>Select your preferred payment method</li>
+                  <li>Complete the payment process</li>
+                </ol>
+                <p>Once your payment is confirmed, you'll receive an email confirmation, and the notes will be accessible in your "My Notes" section immediately.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>What payment methods are accepted?</h3>
+              <div class="help-content">
+                <p>We accept various payment methods including:</p>
+                <ul>
+                  <li>Credit/Debit Cards (Visa, MasterCard, RuPay)</li>
+                  <li>UPI (Google Pay, PhonePe, Paytm)</li>
+                  <li>Net Banking (All major Indian banks)</li>
+                  <li>Razorpay gateway for secure transactions</li>
+                </ul>
+                <p>All payments are processed securely through our payment partners, ensuring your financial information remains safe.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>How can I track my order?</h3>
+              <div class="help-content">
+                <p>You can track your orders in the "My Orders" section of your account. This shows all your past orders and their current status.</p>
+                <p>Since our products are digital, most orders are processed instantly. If you encounter any issues with accessing your purchased notes, please contact our support team.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>How do I apply a coupon code?</h3>
+              <div class="help-content">
+                <p>To apply a coupon code:</p>
+                <ol>
+                  <li>Add notes to your cart</li>
+                  <li>Go to the cart page</li>
+                  <li>Find the "Apply Coupon" section</li>
+                  <li>Enter your coupon code and click "Apply"</li>
+                </ol>
+                <p>The discount will be automatically applied to your order total. Some coupons have minimum purchase requirements or are specific to certain categories of notes.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>Is my payment information secure?</h3>
+              <div class="help-content">
+                <p>We take security very seriously. All payment information is processed through secure payment gateways that use industry-standard encryption protocols. We never store your complete credit card information on our servers.</p>
+                <p>Our website uses SSL (Secure Socket Layer) technology to ensure that all data transmitted between your browser and our servers is encrypted and secure.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="help-category">
+          <h2><i class="fas fa-book"></i> Notes & Downloads</h2>
+          <div class="help-items">
+            <div class="help-item">
+              <h3>How do I access my purchased notes?</h3>
+              <div class="help-content">
+                <p>After purchasing notes, you can access them in the "My Notes" section of your account. You have two options:</p>
+                <ol>
+                  <li><strong>Read Online:</strong> Click on any note to open it in our online reader with features like highlighting, bookmarking, and note-taking.</li>
+                  <li><strong>Download:</strong> Click the "Download" button to save the note to your NoteFolio library for offline access within our platform.</li>
+                </ol>
+                <p>Your purchased notes remain accessible for 1 year from the date of purchase.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>Can I download notes to my device?</h3>
+              <div class="help-content">
+                <p>For copyright protection and to respect our content creators' intellectual property, notes can only be downloaded within our platform and cannot be saved to your device's storage.</p>
+                <p>When you download a note, it becomes available in your "Downloads" section for offline access within the NoteFolio platform. This ensures our content remains protected while still allowing you to study without an internet connection.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>How long can I access my purchased notes?</h3>
+              <div class="help-content">
+                <p>You can access your purchased notes for 1 year from the date of purchase. After that period, you may need to repurchase them if you still need access.</p>
+                <p>The expiration date for each note is clearly displayed in your "My Notes" section, with reminders when notes are approaching expiration.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>What features does the note viewer offer?</h3>
+              <div class="help-content">
+                <p>Our advanced note viewer includes several features to enhance your studying experience:</p>
+                <ul>
+                  <li><strong>Highlighter Tool:</strong> Mark important sections with customizable color highlights</li>
+                  <li><strong>Bookmarking:</strong> Save specific pages for quick access</li>
+                  <li><strong>Note-Taking:</strong> Add your own notes alongside the content</li>
+                  <li><strong>Table of Contents:</strong> Easy navigation through chapters</li>
+                  <li><strong>Search:</strong> Find specific content within notes</li>
+                  <li><strong>Zoom Controls:</strong> Adjust text size for comfortable reading</li>
+                </ul>
+                <p>These features are designed to make your studying more efficient and effective.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>Are the notes regularly updated?</h3>
+              <div class="help-content">
+                <p>Yes, our notes are regularly reviewed and updated to ensure accuracy and relevance. When a note you've purchased receives a significant update, you'll be notified via email.</p>
+                <p>Minor updates are made automatically and don't require any action on your part. For major content revisions, you'll have access to both the original version you purchased and the updated version.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="help-category">
+          <h2><i class="fas fa-user"></i> Account & Profile</h2>
+          <div class="help-items">
+            <div class="help-item">
+              <h3>How do I create an account?</h3>
+              <div class="help-content">
+                <p>Creating an account on NoteFolio is quick and easy:</p>
+                <ol>
+                  <li>Click on the "Sign Up" button in the top right corner of the page</li>
+                  <li>Fill in your details (name, email, and password)</li>
+                  <li>Click "Sign Up" to create your account</li>
+                  <li>Verify your email address by clicking the link sent to your inbox</li>
+                </ol>
+                <p>Once your account is created, you can start browsing, purchasing, and accessing notes immediately.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>How do I reset my password?</h3>
+              <div class="help-content">
+                <p>If you've forgotten your password:</p>
+                <ol>
+                  <li>Click on the "Login" button</li>
+                  <li>Click on "Forgot Password" below the login form</li>
+                  <li>Enter your email address and click "Reset Password"</li>
+                  <li>Check your email for a password reset link</li>
+                  <li>Click the link and follow the instructions to create a new password</li>
+                </ol>
+                <p>The password reset link is valid for 24 hours. If you don't receive the email, check your spam folder or contact our support team.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>How do I update my profile information?</h3>
+              <div class="help-content">
+                <p>You can update your profile information in the "Edit Profile" section of your account:</p>
+                <ol>
+                  <li>Log in to your account</li>
+                  <li>Click on your name or profile icon in the top right corner</li>
+                  <li>Select "Edit Profile" from the dropdown menu</li>
+                  <li>Update your information (name, email, phone number, etc.)</li>
+                  <li>Click "Save Changes" to apply the updates</li>
+                </ol>
+                <p>You can also change your password from this section by providing your current password and entering a new one.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>How do I delete my account?</h3>
+              <div class="help-content">
+                <p>If you wish to delete your account:</p>
+                <ol>
+                  <li>Log in to your account</li>
+                  <li>Go to "Edit Profile"</li>
+                  <li>Scroll to the bottom and click "Delete Account"</li>
+                  <li>Confirm your decision by entering your password</li>
+                </ol>
+                <p><strong>Important:</strong> Deleting your account will permanently remove all your data, including purchase history and access to purchased notes. This action cannot be undone.</p>
+                <p>If you're experiencing issues with our service, please contact our support team before deleting your account—we might be able to resolve your concerns.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="help-category">
+          <h2><i class="fas fa-shield-alt"></i> Anti-Screenshot Protection</h2>
+          <div class="help-items">
+            <div class="help-item">
+              <h3>How does anti-screenshot protection work?</h3>
+              <div class="help-content">
+                <p>Our anti-screenshot protection uses advanced techniques to prevent unauthorized copying of premium content:</p>
+                <ul>
+                  <li>Dynamic watermarking with your personal information</li>
+                  <li>Detection of screenshot attempts</li>
+                  <li>Blocking of common screen capture methods</li>
+                  <li>Content protection when printing or using browser tools</li>
+                </ul>
+                <p>When a screenshot attempt is detected, the content is temporarily hidden and a warning is displayed. This helps protect the intellectual property of our content creators.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>Why can't I take screenshots of the notes?</h3>
+              <div class="help-content">
+                <p>Screenshots are disabled to protect intellectual property rights and prevent unauthorized distribution of premium content. This allows us to:</p>
+                <ul>
+                  <li>Ensure fair compensation for content creators</li>
+                  <li>Maintain the quality and exclusivity of our offerings</li>
+                  <li>Prevent copyright infringement</li>
+                  <li>Keep prices affordable for all students</li>
+                </ul>
+                <p>While you cannot save or screenshot the content to your device, you can access it anytime through our platform and use our built-in note-taking tools to mark important sections.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>How can I study without taking screenshots?</h3>
+              <div class="help-content">
+                <p>We understand the need for effective study methods. Instead of screenshots, we offer these alternatives:</p>
+                <ul>
+                  <li><strong>Highlighting:</strong> Use our built-in highlighter to mark important content</li>
+                  <li><strong>Notes:</strong> Add your own notes alongside the content</li>
+                  <li><strong>Bookmarks:</strong> Save important pages for quick access</li>
+                  <li><strong>Offline Access:</strong> Download notes within our app for studying without internet</li>
+                  <li><strong>Export Highlights:</strong> Export your highlights and notes as text files</li>
+                </ul>
+                <p>These tools are designed to give you a superior study experience while respecting intellectual property rights.</p>
+              </div>
+            </div>
+            <div class="help-item">
+              <h3>I'm getting false screenshot detection alerts</h3>
+              <div class="help-content">
+                <p>If you're experiencing false positives (alerts when you haven't attempted to take a screenshot):</p>
+                <ol>
+                  <li>Make sure you're using a supported browser (Chrome, Firefox, Safari, Edge)</li>
+                  <li>Disable browser extensions that might interfere with our platform</li>
+                  <li>Try using a different device if possible</li>
+                  <li>Clear your browser cache and cookies</li>
+                  <li>Update your browser to the latest version</li>
+                </ol>
+                <p>If the issue persists, please contact our support team with details about your device, browser, and when the false alerts occur. We're constantly improving our systems to minimize false positives.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="why-us-section">
+        <h2>Why Choose NoteFolio?</h2>
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-award"></i></div>
+            <h3 class="benefit-title">Premium Quality</h3>
+            <p class="benefit-description">All our notes are created by top-performing students and verified by subject experts to ensure the highest quality and accuracy.</p>
+          </div>
+          
+          <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-laptop"></i></div>
+            <h3 class="benefit-title">Advanced Note Viewer</h3>
+            <p class="benefit-description">Our feature-rich note viewer includes highlighting, bookmarking, note-taking, and search functionalities to enhance your study experience.</p>
+          </div>
+          
+          <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-mobile-alt"></i></div>
+            <h3 class="benefit-title">Offline Access</h3>
+            <p class="benefit-description">Download notes within our platform for offline access, allowing you to study anytime, anywhere, even without an internet connection.</p>
+          </div>
+          
+          <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-clock"></i></div>
+            <h3 class="benefit-title">Time-Saving</h3>
+            <p class="benefit-description">Save hours of note-taking and focus on understanding concepts with our comprehensive, well-structured study materials.</p>
+          </div>
+          
+          <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-lock"></i></div>
+            <h3 class="benefit-title">Secure Platform</h3>
+            <p class="benefit-description">Your data and payments are protected by bank-grade security measures, ensuring a safe and worry-free experience.</p>
+          </div>
+          
+          <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-headset"></i></div>
+            <h3 class="benefit-title">24/7 Support</h3>
+            <p class="benefit-description">Our dedicated support team is always ready to assist you with any questions or issues you might encounter.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-support">
+        <h2>Still Need Help?</h2>
+        <p>Our dedicated support team is here to assist you with any questions or issues you might have. Choose your preferred way to reach us or fill out the form below.</p>
+        
+        <div class="contact-cards">
+          <div class="contact-card">
+            <i class="fas fa-envelope"></i>
+            <h3>Email Support</h3>
+            <p>support@notefolio.com</p>
+            <p>24-48 hour response time</p>
+          </div>
+          
+          <div class="contact-card">
+            <i class="fas fa-phone-alt"></i>
+            <h3>Phone Support</h3>
+            <p>+91 9876543210</p>
+            <p>10 AM - 6 PM, Monday-Friday</p>
+          </div>
+          
+          <div class="contact-card">
+            <i class="fas fa-comments"></i>
+            <h3>Live Chat</h3>
+            <p>Available on website</p>
+            <p>Instant responses during business hours</p>
+          </div>
+        </div>
+        
+        <form id="support-form" class="support-form">
+          <div class="form-group">
+            <label for="support-subject">Subject</label>
+            <select id="support-subject" required>
+              <option value="">-- Select a topic --</option>
+              <option value="account">Account Issues</option>
+              <option value="payment">Payment Problems</option>
+              <option value="notes">Notes Access</option>
+              <option value="download">Download Trouble</option>
+              <option value="technical">Technical Issues</option>
+              <option value="suggestion">Suggestions</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="support-name">Name</label>
+            <input type="text" id="support-name" placeholder="Your name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="support-email">Email</label>
+            <input type="email" id="support-email" placeholder="Your email address" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="support-message">Message</label>
+            <textarea id="support-message" placeholder="Describe your issue in detail..." rows="5" required></textarea>
+          </div>
+          
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Login</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <p class="modal-footer-text">Don't have an account? <span class="modal-link" id="switch-to-signup">Sign up</span></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signup-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Sign Up</h2>
+      <form id="signup-form">
+        <div class="form-group">
+          <label for="signup-name">Name</label>
+          <input type="text" id="signup-name" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-confirm-password">Confirm Password</label>
+          <input type="password" id="signup-confirm-password" required>
+        </div>
+        <button type="submit" class="btn">Sign Up</button>
+        <p class="modal-footer-text">Already have an account? <span class="modal-link" id="switch-to-login">Login</span></p>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="images/Logo/logo1.png" alt="NoteFolio Logo" class="logo-image">
+        <span>Note</span>Folio
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="my-notes.html">My Notes</a></li>
+          <li><a href="my-orders.html">My Orders</a></li>
+          <li><a href="downloads.html">Downloads</a></li>
+          <li><a href="help-center.html">Help Center</a></li>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms-of-service.html">Terms of Service</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h3>Contact Us</h3>
+        <p><i class="fas fa-envelope"></i> support@notefolio.com</p>
+        <p><i class="fas fa-phone"></i> +91 9876543210</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 NoteFolio. All rights reserved.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 NoteFolio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js?v=4"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Help item toggle
+      const helpItems = document.querySelectorAll('.help-item h3');
+      helpItems.forEach(item => {
+        item.addEventListener('click', function() {
+          this.parentElement.classList.toggle('active');
+        });
+      });
+      
+      // Help search functionality
+      const searchBtn = document.getElementById('help-search-btn');
+      const searchInput = document.getElementById('help-search-input');
+      
+      if (searchBtn && searchInput) {
+        searchBtn.addEventListener('click', searchHelp);
+        searchInput.addEventListener('keyup', function(e) {
+          if (e.key === 'Enter') {
+            searchHelp();
+          }
+        });
+      }
+      
+      function searchHelp() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        if (!searchTerm) return;
+        
+        const helpItems = document.querySelectorAll('.help-item');
+        let matchFound = false;
+        
+        helpItems.forEach(item => {
+          const title = item.querySelector('h3').textContent.toLowerCase();
+          const content = item.querySelector('.help-content').textContent.toLowerCase();
+          
+          if (title.includes(searchTerm) || content.includes(searchTerm)) {
+            item.classList.add('active');
+            item.classList.add('highlight');
+            matchFound = true;
+            
+            // Scroll to the first match
+            if (!matchFound) {
+              item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          } else {
+            item.classList.remove('highlight');
+          }
+        });
+        
+        if (!matchFound) {
+          alert('No results found for: ' + searchTerm);
+        }
+      }
+      
+      // Support form submission
+      const supportForm = document.getElementById('support-form');
+      if (supportForm) {
+        supportForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // In a real application, you would send the form data to your server
+          alert('Thank you for contacting us! We will get back to you shortly.');
+          this.reset();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

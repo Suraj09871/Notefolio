@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders - NoteFolio</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Identity Services for Sign-In -->
+    <meta name="google-client-id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html"><img src="images/Logo/logo1.png" alt="NoteFolio Logo" class="logo-image"><span>Note</span>Folio</a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="my-notes.html">My Notes</a></li>
+        <li><a href="my-orders.html" class="active my-orders-link">My Orders</a></li>
+        <li><a href="downloads.html">Downloads</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li>
+          <a href="cart.html" class="cart-link">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="cart-count-header">0</span>
+          </a>
+        </li>
+        <li><button id="login-btn" class="login-btn"><i class="fas fa-user"></i> Login</button></li>
+        <li><button id="signup-btn" class="signup-btn"><i class="fas fa-user-plus"></i> Sign Up</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="orders-section">
+  <div class="section-header">
+    <h1>My Orders</h1>
+    <p>View your order history and track your purchases</p>
+  </div>
+  
+  <!-- Order filtering and search -->
+  <div class="orders-tools">
+    <div class="orders-search">
+      <input type="text" id="search-orders" placeholder="Search orders...">
+      <button id="search-orders-btn" class="btn"><i class="fas fa-search"></i></button>
+    </div>
+    
+    <div class="orders-filter">
+      <label for="order-time-filter">Filter by:</label>
+      <select id="order-time-filter">
+        <option value="all">All Orders</option>
+        <option value="recent">Last 30 Days</option>
+        <option value="three-months">Last 3 Months</option>
+        <option value="six-months">Last 6 Months</option>
+        <option value="year">This Year</option>
+      </select>
+    </div>
+  </div>
+  
+  <div id="orders-container" class="orders-container">
+    <!-- Orders will be loaded here via JavaScript -->
+    
+    <!-- Example order item (will be replaced by JavaScript) -->
+    <div class="order-card">
+      <div class="order-header">
+        <div class="order-id">Order ID: ORD-20230508-001</div>
+        <div class="order-date">Placed on: May 8, 2023 at 10:45 AM</div>
+        <div class="order-status completed">Status: Completed</div>
+      </div>
+      
+      <div class="order-items">
+        <div class="order-item">
+          <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/notebook.jpg" alt="Data Structures and Algorithms" class="order-item-image">
+          <div class="order-item-details">
+            <div class="order-item-title">Data Structures and Algorithms</div>
+            <div class="order-item-subject">Subject: Computer Science</div>
+            <a href="note-viewer.html?id=1" class="btn view-note-btn">View Note</a>
+          </div>
+          <div class="order-item-price">₹299</div>
+        </div>
+        
+        <div class="order-item">
+          <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/oop-notebook.jpg" alt="Object-Oriented Programming" class="order-item-image">
+          <div class="order-item-details">
+            <div class="order-item-title">Object-Oriented Programming</div>
+            <div class="order-item-subject">Subject: Computer Science</div>
+            <a href="note-viewer.html?id=2" class="btn view-note-btn">View Note</a>
+          </div>
+          <div class="order-item-price">₹249</div>
+        </div>
+      </div>
+      
+      <div class="order-footer">
+        <div class="order-payment">
+          <div class="payment-method">Payment Method: Credit Card</div>
+          <div class="payment-id">Payment ID: PAY-4S7YHF2D8J</div>
+        </div>
+        <div class="order-summary">
+          <div class="order-subtotal">Subtotal: ₹548</div>
+          <div class="order-discount">Discount: -₹55</div>
+          <div class="order-gst">GST (18%): ₹89</div>
+          <div class="order-total">Total: ₹582</div>
+        </div>
+      </div>
+      
+      <div class="order-actions">
+        <button class="btn download-invoice-btn"><i class="fas fa-file-download"></i> Download Invoice</button>
+        <button class="btn contact-support-btn"><i class="fas fa-headset"></i> Need Help?</button>
+      </div>
+    </div>
+    
+    <div class="order-card">
+      <div class="order-header">
+        <div class="order-id">Order ID: ORD-20230425-002</div>
+        <div class="order-date">Placed on: April 25, 2023 at 3:20 PM</div>
+        <div class="order-status completed">Status: Completed</div>
+      </div>
+      
+      <div class="order-items">
+        <div class="order-item">
+          <img src="https://fkjxfhgvvbdqpgxhqtxc.supabase.co/storage/v1/object/public/images/networks-notebook.jpg" alt="Computer Networks" class="order-item-image">
+          <div class="order-item-details">
+            <div class="order-item-title">Computer Networks</div>
+            <div class="order-item-subject">Subject: Computer Science</div>
+            <a href="note-viewer.html?id=4" class="btn view-note-btn">View Note</a>
+          </div>
+          <div class="order-item-price">₹289</div>
+        </div>
+      </div>
+      
+      <div class="order-footer">
+        <div class="order-payment">
+          <div class="payment-method">Payment Method: UPI</div>
+          <div class="payment-id">Payment ID: PAY-L9A3JK5F6P</div>
+        </div>
+        <div class="order-summary">
+          <div class="order-subtotal">Subtotal: ₹289</div>
+          <div class="order-discount">Discount: -₹0</div>
+          <div class="order-gst">GST (18%): ₹52</div>
+          <div class="order-total">Total: ₹341</div>
+        </div>
+      </div>
+      
+      <div class="order-actions">
+        <button class="btn download-invoice-btn"><i class="fas fa-file-download"></i> Download Invoice</button>
+        <button class="btn contact-support-btn"><i class="fas fa-headset"></i> Need Help?</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Order Pagination -->
+  <div class="pagination">
+    <button class="pagination-btn" disabled><i class="fas fa-chevron-left"></i></button>
+    <button class="pagination-btn active">1</button>
+    <button class="pagination-btn">2</button>
+    <button class="pagination-btn">3</button>
+    <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+  </main>
+
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Login</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <p class="modal-footer-text">Don't have an account? <span class="modal-link" id="switch-to-signup">Sign up</span></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signup-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Sign Up</h2>
+      <form id="signup-form">
+        <div class="form-group">
+          <label for="signup-name">Name</label>
+          <input type="text" id="signup-name" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" required>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" required>
+        </div>
+        <button type="submit" class="btn">Sign Up</button>
+        <p class="modal-footer-text">Already have an account? <span class="modal-link" id="switch-to-login">Login</span></p>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="images/Logo/logo1.png" alt="NoteFolio Logo" class="logo-image">
+        <span>Note</span>Folio
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="my-notes.html">My Notes</a></li>
+          <li><a href="my-orders.html">My Orders</a></li>
+          <li><a href="downloads.html">Downloads</a></li>
+          <li><a href="help-center.html">Help Center</a></li>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms-of-service.html">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h3>Contact Us</h3>
+        <p><i class="fas fa-envelope"></i> support@notefolio.com</p>
+        <p><i class="fas fa-phone"></i> +91 9876543210</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 NoteFolio. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js?v=4"></script>
+</body>
+</html>
